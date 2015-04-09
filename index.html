@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Click Counting</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            font-family: monospace;
+            text-align: center;
+            background-color: #222222;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        
+        span {
+            background-color: skyblue;
+            color: #222222;
+            padding: 10px;
+            margin: 0 auto;
+            display: block;
+            width: 30%;
+            height: 100%;
+            font-weight: 800;
+            font-size: 1.1em;
+            border-radius: 20px 20px 0px 0px;
+            border-bottom: solid #5EC2EB 2px;
+            box-sizing: border-box;
+        }
+        
+        #removeB {
+            background-color: tomato;
+            font-family: sans-serif;
+            color: white;
+            padding: 3px;
+            margin: 0px 0px 10px;
+            border-radius: 5px;
+            border-top: solid #FF9380 3px;
+            border-left: solid #FF9380 3px;
+            border-right: solid #FF3C19 3px;
+            border-bottom:solid #FF3C19 3px;
+            text-shadow: .5px 1.5px #FF3C19;
+        }
+
+        #list p {
+            padding: 2.5px 0px 5px;
+        }
+        
+        #list p:first-child {
+            background-color: lightgray;
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+            font-weight: 600;
+            color: #222222;
+            padding: 10px;
+            box-sizing: border-box;
+            border-bottom: solid grey 3px;
+        }
+        
+        #list {
+            background-color: darkgray;
+            width: 60%;
+            margin: 0 auto;
+        }
+        
+        #wrapper {
+            width: 50%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 10px 0px;
+            border: solid skyblue 4px;
+        }
+        
+        h1 {
+            padding: 0;
+            margin-top: 0;
+            font-size: 2.3em;
+        }
+        
+        h1:hover:after {
+            content: attr(title);
+        }
+    </style>
+    <script src="jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <h1 title="(?)">CLICK COUNTING FOR FUN AND PROFIT</h1>
+        <div id="clickCounter">
+            <button id="removeB">RESET COUNTER</button>
+            <span id="tally">start by clicking anywhere</span> <!--this span text only appears on first load -->
+            <div id="list"></div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        var index = 0; //click counter
+        coordinates = []; //array to store click data
+        $("#removeB").click(function (e) { 
+            e.stopPropagation(); //so click on button doesn't bubble up to document
+            $('#tally').text(" 0 clicks since reset"); //reset text message after counter is reset
+            $('#list').empty(); // remove <p>s with click data from the list
+            coordinates = []; //empty the array on reset click
+            index = 0; //reset click counter
+        });
+        $(document).click(function (e) {
+            index++; //each click increments the counter
+            coordinates.push(["click " + index, "x:" + e.clientX, "y:" + e.clientY]); //push client's x and y into a multidimensional array along with click #
+            var cor = coordinates[index - 1]; //without -1 it tries to reference an index number that doesn't exist yet (counting starts at 0 in arrays)
+            $('#tally').text(index + " CLICKS"); //update tally text to latest click number
+            $('#list').prepend("<p>" + cor.join(" ") + "</p>"); // prepend to go in order of latest click, add a <p> with the latest array entry to the list
+        });
+});
+</script>
+
+</html>
